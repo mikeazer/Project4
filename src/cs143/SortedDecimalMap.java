@@ -49,6 +49,21 @@ public class SortedDecimalMap<E extends DecimalSortable>
     @Override
     public E get(int key) {
         // TODO -- write this code
+        int index;
+        int remainder = key;
+        DecimalNode node = root;
+        for (int i = 0; i < digitCount; i++) {
+            index = remainder / (int) Math.pow(10, digitCount - i - 1);
+            remainder -= (index * Math.pow(10, digitCount - i - 1));
+            if (node.children[index] != null) {
+                node = node.children[index];
+            } else {
+                return null;
+            }
+            if (i == digitCount - 1) {
+                return (E) node.value;
+            }
+        }
         return null;
     }
 
@@ -57,23 +72,19 @@ public class SortedDecimalMap<E extends DecimalSortable>
         // TODO -- write this code
         int index;
         int remainder = e.getKey();
-        int[] arrKey = new int[digitCount];
         DecimalNode node = root;
         for (int i = 0; i < digitCount; i++) {
             index = remainder / (int) Math.pow(10, digitCount - i - 1);
             remainder -= (index * Math.pow(10, digitCount - i - 1));
-            arrKey[i] = index;
-        }
-        for (int i = 0; i < digitCount; i++) {
-            node.makeChild(arrKey[i]);
+            node.makeChild(index);
             if (i == digitCount - 1) {
-                node.children[arrKey[i]].value = e;
+                node.children[index].value = e;
                 return true;
             } else {
-                node = node.children[arrKey[i]];
+                node = node.children[index];
             }
-
         }
+        
         return true;
     }
 
