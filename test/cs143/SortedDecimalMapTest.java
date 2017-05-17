@@ -44,6 +44,10 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testGet() {
+        Product pro1 = new Product(122);
+        data.insert(pro1);
+        assertTrue(data.get(122) == pro1);
+        assertNull(data.get(144));
     }
 
     /**
@@ -65,6 +69,9 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testIsEmpty() {
+        assertTrue(data.isEmpty());
+        data.insert(new Product(254));
+        assertFalse(data.isEmpty());
     }
 
     /**
