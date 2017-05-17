@@ -1,4 +1,4 @@
-        package cs143;
+package cs143;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -13,16 +13,14 @@ public class SortedDecimalMap<E extends DecimalSortable>
 
     /**
      * Constructor.
-     * 
-     * @param digitCount the largest number of digits a sorting key will
-     * contain in this sorted decimal map
+     *
+     * @param digitCount the largest number of digits a sorting key will contain
+     * in this sorted decimal map
      */
     public SortedDecimalMap(int digitCount) {
         root = new DecimalNode();
         this.digitCount = digitCount;
     }
-
-    
 
     @Override
     public boolean contains(int key) {
@@ -30,17 +28,16 @@ public class SortedDecimalMap<E extends DecimalSortable>
         int index;
         int remainder = key;
         DecimalNode node = root;
-        for (int i = 0; i < digitCount - 1; i++) {
-            index = remainder / (int)Math.pow(10, digitCount - i - 1);
-            remainder -= (index* Math.pow(10, digitCount - i - 1));
+        for (int i = 0; i < digitCount; i++) {
+            index = remainder / (int) Math.pow(10, digitCount - i - 1);
+            remainder -= (index * Math.pow(10, digitCount - i - 1));
             if (node.children[index] != null) {
                 node = node.children[index];
-            }
-            else{
+            } else {
                 return false;
             }
-            
-            if (i == digitCount - 2) {
+
+            if (i == digitCount - 1) {
                 if (node.value != null) {
                     return true;
                 }
@@ -63,8 +60,8 @@ public class SortedDecimalMap<E extends DecimalSortable>
         int[] arrKey = new int[digitCount];
         DecimalNode node = root;
         for (int i = 0; i < digitCount; i++) {
-            index = remainder / (int)Math.pow(10, digitCount - i - 1);
-            remainder -= (index* Math.pow(10, digitCount - i - 1));
+            index = remainder / (int) Math.pow(10, digitCount - i - 1);
+            remainder -= (index * Math.pow(10, digitCount - i - 1));
             arrKey[i] = index;
         }
         for (int i = 0; i < digitCount; i++) {
@@ -72,11 +69,10 @@ public class SortedDecimalMap<E extends DecimalSortable>
             if (i == digitCount - 1) {
                 node.children[arrKey[i]].value = e;
                 return true;
+            } else {
+                node = node.children[arrKey[i]];
             }
-            else{
-                node.children[arrKey[i]] = node.children[arrKey[i]].children[arrKey[i + 1]];
-            }
-             
+
         }
         return true;
     }
@@ -89,8 +85,8 @@ public class SortedDecimalMap<E extends DecimalSortable>
 
     /**
      * Reports if the tree is empty or not.
-     * 
-     * @return true if the tree is empty, false if not 
+     *
+     * @return true if the tree is empty, false if not
      */
     @Override
     public boolean isEmpty() {
@@ -99,7 +95,7 @@ public class SortedDecimalMap<E extends DecimalSortable>
 
     /**
      * Private recursive method to determine if the tree is empty.
-     * 
+     *
      * @param node the current node the recursion is on
      * @return false if a value is found in the tree, true if recursion is
      * complete and no values were found
@@ -119,8 +115,8 @@ public class SortedDecimalMap<E extends DecimalSortable>
 
     /**
      * Provides access to a type-specific iterator.
-     * 
-     * @return a new iterator object 
+     *
+     * @return a new iterator object
      */
     @Override
     public Iterator<E> iterator() {
@@ -153,9 +149,9 @@ public class SortedDecimalMap<E extends DecimalSortable>
         }
 
         /**
-         * A private recursive method to fill the queue with the
-         * value of each node in sorted order.
-         * 
+         * A private recursive method to fill the queue with the value of each
+         * node in sorted order.
+         *
          * @param node the current node in the recursive process
          */
         private void fillQueue(DecimalNode node) {
@@ -164,8 +160,8 @@ public class SortedDecimalMap<E extends DecimalSortable>
 
         /**
          * Determines if there is a next value in the map.
-         * 
-         * @return true if there is a next value, false if not 
+         *
+         * @return true if there is a next value, false if not
          */
         @Override
         public boolean hasNext() {
@@ -177,7 +173,7 @@ public class SortedDecimalMap<E extends DecimalSortable>
 
         /**
          * Provides access to the next value in the map, in sorted order.
-         * 
+         *
          * @return the next value
          */
         @Override
@@ -201,11 +197,11 @@ public class SortedDecimalMap<E extends DecimalSortable>
     private class DecimalNode<E> {
 
         /**
-         * the value stored in this node - will be null for all nodes except
-         * the lowest-level leaf nodes
+         * the value stored in this node - will be null for all nodes except the
+         * lowest-level leaf nodes
          */
         public E value;
-        
+
         /**
          * the array used to store the children of this node
          */
@@ -219,11 +215,11 @@ public class SortedDecimalMap<E extends DecimalSortable>
         }
 
         /**
-         * A convenience method to create a new node at the given
-         * index of the current node. 
-         * 
-         * @param index the index of the children array where the new
-         * node should be stored
+         * A convenience method to create a new node at the given index of the
+         * current node.
+         *
+         * @param index the index of the children array where the new node
+         * should be stored
          */
         public void makeChild(int index) {
             children[index] = new DecimalNode();

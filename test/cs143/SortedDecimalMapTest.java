@@ -21,7 +21,7 @@ public class SortedDecimalMapTest {
     
     @Before
     public void setUp() {
-        data = new SortedDecimalMap<>(3);
+        data = new SortedDecimalMap<>(1);
     }
 
     /**
@@ -29,11 +29,11 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testContains() {
-        Product pro1 = new Product(206);
-        Product pro2 = new Product(301);
+        Product pro1 = new Product(2);
+        Product pro2 = new Product(3);
         data.insert(pro1);
-        assertTrue(data.contains(206));
-        assertFalse(data.contains(301));
+        assertTrue(data.contains(2));
+        assertFalse(data.contains(3));
     }
 
     /**
