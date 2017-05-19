@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import cs143.*;
+import java.util.Iterator;
 
 /**
  *
@@ -79,6 +80,25 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testIterator() {
+        Iterator it = data.iterator();
+        assertFalse(it.hasNext());
+        assertNull(it.next());
+        Product pro1 = new Product(355);
+        Product pro2 = new Product(244);
+        Product pro3 = new Product(145);
+        Product pro4 = new Product(147);
+        data.insert(pro1);
+        data.insert(pro2);
+        data.insert(pro3);
+        data.insert(pro4);
+        Iterator it1 = data.iterator();
+        assertSame(pro3, it1.next());
+        assertSame(pro4, it1.next());
+        assertSame(pro2, it1.next());
+        assertSame(pro1, it1.next());
+        
+        System.out.println("fun");
+        
     }
     
 }

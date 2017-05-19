@@ -76,7 +76,9 @@ public class SortedDecimalMap<E extends DecimalSortable>
         for (int i = 0; i < digitCount; i++) {
             index = remainder / (int) Math.pow(10, digitCount - i - 1);
             remainder -= (index * Math.pow(10, digitCount - i - 1));
-            node.makeChild(index);
+            if (node.children[index] == null) {
+                node.makeChild(index);
+            }
             if (i == digitCount - 1) {
                 node.children[index].value = e;
                 return true;
@@ -84,7 +86,7 @@ public class SortedDecimalMap<E extends DecimalSortable>
                 node = node.children[index];
             }
         }
-        
+
         return true;
     }
 
@@ -166,7 +168,15 @@ public class SortedDecimalMap<E extends DecimalSortable>
          * @param node the current node in the recursive process
          */
         private void fillQueue(DecimalNode node) {
-            // TODO -- write this code
+            for (int i = 0; i < 10; i++) {
+                if (node.children[i] != null) {
+                    if (node.children[i].value != null) {
+                       queue.add((E)node.children[i].value);
+                    } else {
+                        fillQueue(node.children[i]);
+                    }
+                }
+            }
         }
 
         /**
