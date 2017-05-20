@@ -96,7 +96,9 @@ public class SortedDecimalMapTest {
         assertSame(pro4, it1.next());
         assertSame(pro2, it1.next());
         assertSame(pro1, it1.next());
-        
+        for (Product product : data) {
+            System.out.println(product);
+        }
         System.out.println("fun");
         
     }

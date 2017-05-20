@@ -80,19 +80,51 @@ public class SortedDecimalMap<E extends DecimalSortable>
                 node.makeChild(index);
             }
             if (i == digitCount - 1) {
+                if (node.children[index].value != null) {
+                    return false;
+                }
                 node.children[index].value = e;
                 return true;
             } else {
                 node = node.children[index];
             }
         }
-
         return true;
     }
 
     @Override
     public boolean remove(int key) {
         // TODO -- write this code
+        int index;
+        int remainder = key;
+        DecimalNode node = root;
+        for (int i = 0; i < digitCount; i++) {
+            index = remainder / (int) Math.pow(10, digitCount - i - 1);
+            remainder -= (index * Math.pow(10, digitCount - i - 1));
+            if (node.children[index] == null) {
+                return false;
+            }
+            if (i == digitCount - 1) {
+                if (node.children[index].value != null) {
+                    node.children[index].value = null;
+                    return true;
+                }
+            }
+            else{
+                node = node.children[index];
+            }
+//            if (i == digitCount - 1) {
+//            if (node.children[index].value != null) {
+//                    return false;
+//                }
+//                node.children[index].value = e;
+//                return true;
+//            } else {
+//                node = node.children[index];
+//            }
+            
+            
+        }
         return true;
     }
 
