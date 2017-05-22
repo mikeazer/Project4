@@ -113,29 +113,18 @@ public class SortedDecimalMap<E extends DecimalSortable>
             else{
                 node = node.children[index];
             }
-//            if (i == digitCount - 1) {
-//            if (node.children[index].value != null) {
-//                    return false;
-//                }
-//                node.children[index].value = e;
-//                return true;
-//            } else {
-//                node = node.children[index];
-//            }
-            
-            
         }
         return true;
     }
 
-    /**
+     /**
      * Reports if the tree is empty or not.
      *
      * @return true if the tree is empty, false if not
      */
     @Override
     public boolean isEmpty() {
-        return isEmpty(root);
+        return isEmpty(root, true);
     }
 
     /**
@@ -145,17 +134,17 @@ public class SortedDecimalMap<E extends DecimalSortable>
      * @return false if a value is found in the tree, true if recursion is
      * complete and no values were found
      */
-    private boolean isEmpty(DecimalNode node) {
-        for (int i = 0; i < 10; i++) {
-            if (node.children[i] != null) {
-                if (node.children[i].value != null) {
-                    return false;
-                } else {
-                    return isEmpty(node.children[i]);
+    private boolean isEmpty(DecimalNode node, boolean empty) {
+        if (node.value != null) {
+            return false;
+        } else {
+            for (int i = 0; i < 10; i++) {
+                if (node.children[i] != null) {
+                    empty = empty && isEmpty(node.children[i], empty);
                 }
             }
         }
-        return true;
+        return empty;
     }
 
     /**

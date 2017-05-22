@@ -1,28 +1,34 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cs143;
 
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import cs143.*;
-import java.util.Iterator;
 
 /**
  *
- * @author Son Tran
+ * @author Son Minh Tran
  */
 public class SortedDecimalMapTest {
-    SortedDecimalMap<Product> data;
+
+    //fields
+    SortedDecimalMap dst;
+    SortedDecimalMap dst1;
+    SortedDecimalMap dst2;
+    Product prd;
+    Product prd2;
+    Product prd3;
+
     public SortedDecimalMapTest() {
     }
-    
+
     @Before
     public void setUp() {
-        data = new SortedDecimalMap<>(3);
+        dst = new SortedDecimalMap(5);
+        dst1 = new SortedDecimalMap(5);
+        dst2 = new SortedDecimalMap(5);
+        prd = new Product(97358);
+        prd2 = new Product(46738);
+        prd3 = new Product(98375);
     }
 
     /**
@@ -30,14 +36,16 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testContains() {
-        Product pro1 = new Product(125);
-        Product pro2 = new Product(3);
-        Product pro3 = new Product(148);
-        data.insert(pro1);
-        data.insert(pro2);
-        assertTrue(data.contains(125));
-        assertTrue(data.contains(3));
-        assertFalse(data.contains(148));
+        dst.insert(prd);
+        dst.insert(prd2);
+        dst.insert(prd3);
+        assertTrue(dst.contains(97358));
+        assertFalse(!dst.contains(97358));
+        assertTrue(dst.contains(46738));
+        assertFalse(!dst.contains(46738));
+        assertTrue(dst.contains(98375));
+        assertFalse(!dst.contains(98375));
+        assertFalse(dst.contains(124));
     }
 
     /**
@@ -45,10 +53,12 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testGet() {
-        Product pro1 = new Product(122);
-        data.insert(pro1);
-        assertTrue(data.get(122) == pro1);
-        assertNull(data.get(144));
+        dst.insert(prd);
+        dst.insert(prd2);
+        dst.insert(prd3);
+        assertTrue(prd == dst.get(97358));
+        assertTrue(prd2 == dst.get(46738));
+        assertTrue(prd3 == dst.get(98375));
     }
 
     /**
@@ -56,6 +66,14 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testInsert() {
+        dst.insert(prd);
+        dst.insert(prd2);
+        dst.insert(prd3);
+        assertTrue(dst.contains(97358));
+        assertFalse(!dst.contains(97358));
+        assertTrue(dst.contains(46738));
+        assertFalse(!dst.contains(46738));
+        assertTrue(dst.contains(98375));
     }
 
     /**
@@ -63,6 +81,15 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testRemove() {
+        dst.insert(prd);
+        dst.insert(prd2);
+        dst.insert(prd3);
+        dst.remove(97358);
+        assertFalse(dst.contains(97358));
+        assertTrue(dst.contains(46738));
+        dst.remove(46738);
+        assertFalse(dst.contains(46738));
+        assertTrue(dst.contains(98375));
     }
 
     /**
@@ -70,9 +97,11 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testIsEmpty() {
-        assertTrue(data.isEmpty());
-        data.insert(new Product(254));
-        assertFalse(data.isEmpty());
+        assertTrue(dst.isEmpty());
+        dst.insert(prd);
+        dst.insert(prd2);
+        dst.insert(prd3);
+        assertFalse(dst.isEmpty());
     }
 
     /**
@@ -80,27 +109,8 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testIterator() {
-        Iterator it = data.iterator();
-        assertFalse(it.hasNext());
-        assertNull(it.next());
-        Product pro1 = new Product(355);
-        Product pro2 = new Product(244);
-        Product pro3 = new Product(145);
-        Product pro4 = new Product(147);
-        data.insert(pro1);
-        data.insert(pro2);
-        data.insert(pro3);
-        data.insert(pro4);
-        Iterator it1 = data.iterator();
-        assertSame(pro3, it1.next());
-        assertSame(pro4, it1.next());
-        assertSame(pro2, it1.next());
-        assertSame(pro1, it1.next());
-        for (Product product : data) {
-            System.out.println(product);
-        }
-        System.out.println("fun");
-        
+        dst.insert(prd);
+        dst.insert(prd2);
+        dst.insert(prd3);
     }
-    
 }
