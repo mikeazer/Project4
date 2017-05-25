@@ -61,7 +61,12 @@ public class SortedDecimalMap<E extends DecimalSortable>
                 return null;
             }
             if (i == digitCount - 1) {
-                return (E) node.value;
+                if(node != null){
+                        return (E) node.value;
+                }
+                else{
+                        return null;
+                }
             }
         }
         return null;

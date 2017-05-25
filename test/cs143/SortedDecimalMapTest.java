@@ -1,34 +1,29 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package cs143;
 
-import static org.junit.Assert.*;
+import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
- * @author Son Minh Tran
+ * @author morel
  */
 public class SortedDecimalMapTest {
 
-    //fields
-    SortedDecimalMap dst;
-    SortedDecimalMap dst1;
-    SortedDecimalMap dst2;
-    Product prd;
-    Product prd2;
-    Product prd3;
+    SortedDecimalMap<Product> tree;
 
     public SortedDecimalMapTest() {
     }
 
     @Before
     public void setUp() {
-        dst = new SortedDecimalMap(5);
-        dst1 = new SortedDecimalMap(5);
-        dst2 = new SortedDecimalMap(5);
-        prd = new Product(97358);
-        prd2 = new Product(46738);
-        prd3 = new Product(98375);
+        tree = new SortedDecimalMap<>(3);
     }
 
     /**
@@ -36,16 +31,15 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testContains() {
-        dst.insert(prd);
-        dst.insert(prd2);
-        dst.insert(prd3);
-        assertTrue(dst.contains(97358));
-        assertFalse(!dst.contains(97358));
-        assertTrue(dst.contains(46738));
-        assertFalse(!dst.contains(46738));
-        assertTrue(dst.contains(98375));
-        assertFalse(!dst.contains(98375));
-        assertFalse(dst.contains(124));
+        assertFalse(tree.contains(125));
+        tree.insert(new Product(555));
+        assertTrue(tree.contains(555));
+        assertFalse(tree.contains(1234));
+        assertFalse(tree.contains(1));
+        tree.remove(555);
+        assertFalse(tree.contains(555));
+        tree.insert(new Product(321));
+        assertFalse(tree.contains(320));
     }
 
     /**
@@ -53,12 +47,16 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testGet() {
-        dst.insert(prd);
-        dst.insert(prd2);
-        dst.insert(prd3);
-        assertTrue(prd == dst.get(97358));
-        assertTrue(prd2 == dst.get(46738));
-        assertTrue(prd3 == dst.get(98375));
+        assertNull(tree.get(12));
+        tree.insert(new Product(654, "Bread", 12, 65));
+        assertEquals(tree.get(654).getProductName(), "Bread");
+        assertNull(tree.get(0654));
+        assertNull(tree.get(123));
+        assertNull(tree.get(10000));
+        tree.insert(new Product(65));
+        assertEquals(tree.get(65), new Product(65));
+        tree.remove(654);
+        assertNull(tree.get(650));
     }
 
     /**
@@ -66,14 +64,32 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testInsert() {
-        dst.insert(prd);
-        dst.insert(prd2);
-        dst.insert(prd3);
-        assertTrue(dst.contains(97358));
-        assertFalse(!dst.contains(97358));
-        assertTrue(dst.contains(46738));
-        assertFalse(!dst.contains(46738));
-        assertTrue(dst.contains(98375));
+        assertFalse(tree.insert(new Product(987654)));
+        assertTrue(tree.insert(new Product(21)));
+        assertTrue(tree.insert(new Product(21)));
+        assertTrue(tree.insert(new Product(215)));
+        assertEquals(tree.get(21), new Product(21));
+        assertEquals(tree.get(215), new Product(215));
+        assertFalse(tree.insert(null));
+        assertTrue(tree.insert(new Product(210)));
+        tree.insert(new Product(984, "Vodka", 45, 13));
+        Product product = tree.get(984);
+        tree.remove(product.getProductId());
+        product.setProductId(331);
+        tree.insert(product);
+        assertEquals(tree.get(331).getIsle(), 45);
+        assertEquals(tree.get(331).getShelf(), 13);
+        assertEquals(tree.get(331).hashCode(), 726);
+        assertEquals(tree.get(331).toString(), "331");
+        product = tree.get(331);
+        product.setIsle(12);
+        product.setShelf(1);
+        product.setProductName("Beer");
+        assertEquals(tree.get(331).getProductName(), "Beer");
+        assertTrue(tree.get(331).equals(product));
+        assertFalse(tree.get(331).equals(tree.get(330)));
+        assertFalse(tree.get(331).equals("331"));
+        assertFalse(tree.get(331).equals(new Product(330)));
     }
 
     /**
@@ -81,15 +97,15 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testRemove() {
-        dst.insert(prd);
-        dst.insert(prd2);
-        dst.insert(prd3);
-        dst.remove(97358);
-        assertFalse(dst.contains(97358));
-        assertTrue(dst.contains(46738));
-        dst.remove(46738);
-        assertFalse(dst.contains(46738));
-        assertTrue(dst.contains(98375));
+        assertFalse(tree.remove(250));
+        tree.insert(new Product(234));
+        assertTrue(tree.remove(234));
+        assertTrue(tree.isEmpty());
+        assertFalse(tree.remove(12345));
+        tree.insert(new Product(12));
+        assertTrue(tree.remove(12));
+        tree.insert(new Product(132));
+        assertFalse(tree.remove(130));
     }
 
     /**
@@ -97,11 +113,9 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testIsEmpty() {
-        assertTrue(dst.isEmpty());
-        dst.insert(prd);
-        dst.insert(prd2);
-        dst.insert(prd3);
-        assertFalse(dst.isEmpty());
+        assertTrue(tree.isEmpty());
+        tree.insert(new Product(321));
+        assertFalse(tree.isEmpty());
     }
 
     /**
@@ -109,8 +123,26 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testIterator() {
-        dst.insert(prd);
-        dst.insert(prd2);
-        dst.insert(prd3);
+        Iterator<Product> itr = tree.iterator();
+        assertFalse(itr.hasNext());
+        tree.insert(new Product(123));
+        itr = tree.iterator();
+        assertTrue(itr.hasNext());
+        tree.insert(new Product(245));
+        tree.insert(new Product(987));
+        itr = tree.iterator();
+        assertEquals(itr.next(), new Product(123));
+        assertEquals(itr.next(), new Product(245));
+        assertEquals(itr.next(), new Product(987));
+        assertEquals(itr.next(), null);
+        itr = tree.iterator();
+        itr.next();
+        itr.remove();
+        assertEquals(itr.next(), new Product(245));
+        itr.next();
+        itr.remove();
+        assertNull(itr.next());
+        assertTrue(tree.isEmpty());
     }
+
 }
