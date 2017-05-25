@@ -34,7 +34,7 @@ public class SortedDecimalMapTest {
         assertFalse(tree.contains(125));
         tree.insert(new Product(555));
         assertTrue(tree.contains(555));
-        assertFalse(tree.contains(1234));
+        assertFalse(tree.contains(123));
         assertFalse(tree.contains(1));
         tree.remove(555);
         assertFalse(tree.contains(555));
@@ -52,7 +52,7 @@ public class SortedDecimalMapTest {
         assertEquals(tree.get(654).getProductName(), "Bread");
         assertNull(tree.get(0654));
         assertNull(tree.get(123));
-        assertNull(tree.get(10000));
+        assertNull(tree.get(100));
         tree.insert(new Product(65));
         assertEquals(tree.get(65), new Product(65));
         tree.remove(654);
@@ -64,13 +64,12 @@ public class SortedDecimalMapTest {
      */
     @Test
     public void testInsert() {
-        assertFalse(tree.insert(new Product(987654)));
+        assertTrue(tree.insert(new Product(987)));
         assertTrue(tree.insert(new Product(21)));
-        assertTrue(tree.insert(new Product(21)));
+        assertFalse(tree.insert(new Product(21)));
         assertTrue(tree.insert(new Product(215)));
         assertEquals(tree.get(21), new Product(21));
         assertEquals(tree.get(215), new Product(215));
-        assertFalse(tree.insert(null));
         assertTrue(tree.insert(new Product(210)));
         tree.insert(new Product(984, "Vodka", 45, 13));
         Product product = tree.get(984);
@@ -101,7 +100,7 @@ public class SortedDecimalMapTest {
         tree.insert(new Product(234));
         assertTrue(tree.remove(234));
         assertTrue(tree.isEmpty());
-        assertFalse(tree.remove(12345));
+        assertFalse(tree.remove(123));
         tree.insert(new Product(12));
         assertTrue(tree.remove(12));
         tree.insert(new Product(132));
@@ -139,6 +138,7 @@ public class SortedDecimalMapTest {
         itr.next();
         itr.remove();
         assertEquals(itr.next(), new Product(245));
+        itr.remove();
         itr.next();
         itr.remove();
         assertNull(itr.next());
